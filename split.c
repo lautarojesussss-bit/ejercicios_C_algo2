@@ -42,7 +42,6 @@ struct vector* vector_crear()
 
         v->palabras = palabras;
         return v;
-        
 };
 
 
