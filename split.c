@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include<string.h>
+#include<stdio.h>
 #define ERROR_MENSAJE "Error al intentar reservar memoria.\n"
 
 //"Hola;1;2;3;mundo"
@@ -35,7 +36,7 @@ struct vector* vector_crear()
         if (!v)
                 return NULL;
         
-        char *palabras = malloc(sizeof(char));
+        char **palabras = malloc(sizeof(char*));
         if (!palabras) {
                 free(v);
                 return NULL;
@@ -72,10 +73,11 @@ struct vector *split(char *texto, char separador)
 
         for (size_t i = 0; i < strlen(texto) && !error_memoria; i++) {
                 if (texto[i] == separador || i == 0) {
-                        char* palabras_aux = realloc(resultado->palabras, (resultado->cantidad + 1)*sizeof(char*));
+                        char** palabras_aux = realloc(resultado->palabras, (resultado->cantidad + 1)*sizeof(char*));
                         char* nueva_palabra_aux = malloc(sizeof(char));
 
                         if (palabras_aux != NULL && nueva_palabra_aux != NULL ) {
+                                resultado->palabras = palabras_aux;
                                 resultado->palabras[resultado->cantidad] = nueva_palabra_aux;
                                 resultado->palabras[resultado->cantidad][0] = '\0';
                                 cant_letras_aux = 1;
