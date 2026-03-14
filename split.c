@@ -18,7 +18,7 @@ void vector_destruir(struct vector *v)
 {
         for (size_t i = 0; i < v->cantidad; i++)
                 free(v->palabras[i]);
-        
+        free(v->palabras); //este me falta tanto reservar como liberar
         free(v);
 }
 
@@ -52,7 +52,7 @@ struct vector* avisar_error()
 }
 
 //creo que lo que pasa es que no reserve un char* para tener como vector de strings, directamente intenté llenar un vector que todavía no está en ningún lado
-
+//ahora tengo que tener en cosideración diferentes escenarios de errores de memoria y ver si funciona bien lo de liberar en los diferentes casos por ej que se haga bien la primera reservación de memoria pero falle algo antes de poder cargarle nada al struct
 /*
 *PRE: texto debe ser un string
 *POST: se devuelve un puntero al struct con el vector que tiene las palabras, ya separadas,
@@ -73,10 +73,10 @@ struct vector *split(char *texto, char separador)
         for (size_t i = 0; i < strlen(texto) && !error_memoria; i++) {
                 if (texto[i] == separador || i == 0) {
                         char* palabras_aux = realloc(resultado->palabras, (resultado->cantidad + 1)*sizeof(char*));
-                        char* palabra_aux = malloc(sizeof(char));
+                        char* nueva_palabra_aux = malloc(sizeof(char));
 
-                        if (palabra_aux != NULL) {
-                                resultado->palabras[resultado->cantidad] = palabra_aux;
+                        if (palabras_aux != NULL && nueva_palabra_aux != NULL ) {
+                                resultado->palabras[resultado->cantidad] = nueva_palabra_aux;
                                 resultado->palabras[resultado->cantidad][0] = '\0';
                                 cant_letras_aux = 1;
                                 resultado->cantidad++;
@@ -84,11 +84,11 @@ struct vector *split(char *texto, char separador)
                                 error_memoria = true;    
                         }
                 } else {
-                        char* palabra_actualizada = realloc(
+                        char* palabra_actualizar_aux = realloc(
                                 resultado->palabras[(resultado->cantidad) - 1], (cant_letras_aux + 1)*(sizeof(char)));
 
-                        if (palabra_actualizada != NULL) {
-                                resultado->palabras[resultado->cantidad - 1] = palabra_actualizada;
+                        if (palabra_actualizar_aux != NULL) {
+                                resultado->palabras[resultado->cantidad - 1] = palabra_actualizar_aux;
                                 resultado->palabras[resultado->cantidad - 1][cant_letras_aux - 1] = texto[i];
                                 resultado->palabras[resultado->cantidad - 1][cant_letras_aux] = '\0'; 
                                 cant_letras_aux++;
