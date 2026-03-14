@@ -5,15 +5,9 @@
 #include<stdio.h>
 #define ERROR_MENSAJE "Error al intentar reservar memoria.\n"
 
-//"Hola;1;2;3;mundo"
-// ["Hola", "1","2","3","mundo"]
-
-//creo que a grandes rasgos ya está la función, me falta pensarla un toque más y escribir el error_memoria
-
-
 /*
-*PRE:
-*POST:
+*PRE: vector debe haber sido creado con vector_crear()
+*POST: libera toda la memoria reservada vinculada a v
 */
 void vector_destruir(struct vector *v)
 {
@@ -23,11 +17,10 @@ void vector_destruir(struct vector *v)
         free(v);
 }
 
-
-//Debería armar una función que se crear vector y que directamente reserve la memoria y todo eso
 /*
-*PRE:
-*POST:
+*PRE: 
+*POST: devuelve un puntero a una instancia de struct vector inicializado 
+*con una sola palabra que es solo el caracter nulo
 */
 struct vector* vector_crear()
 {
@@ -58,18 +51,20 @@ struct vector* vector_crear()
         return v;
 };
 
+/*
+*PRE: 
+*POST: devuelve NULL e imprime un aviso de error 
+*/
 struct vector* avisar_error()
 {
         printf(ERROR_MENSAJE);
         return NULL;
 }
 
-//creo que lo que pasa es que no reserve un char* para tener como vector de strings, directamente intenté llenar un vector que todavía no está en ningún lado
-//ahora tengo que tener en cosideración diferentes escenarios de errores de memoria y ver si funciona bien lo de liberar en los diferentes casos por ej que se haga bien la primera reservación de memoria pero falle algo antes de poder cargarle nada al struct
 /*
 *PRE: texto debe ser un string
-*POST: se devuelve un puntero al struct con el vector que tiene las palabras, ya separadas,
-*y su tamaño en el campo cantidad, si falla algo se devuelve NULL 
+*POST: se devuelve un puntero a una instancia de struct vector que tiene las palabras, ya separadas,
+*y su tamaño en el campo cantidad, si falla algo se devuelve NULL y se imprime un aviso
 */ 
 struct vector *split(char *texto, char separador)
 {
@@ -112,15 +107,11 @@ struct vector *split(char *texto, char separador)
 
         if (error_memoria) {
                 vector_destruir(resultado);
-                return NULL;
+                return avisar_error();
         }
 
         return resultado;
         
 }
-
-
-// cómo puedo testeear esto ahora? sí o sí necesito valgrind gcc y gdb creo, o sea crear la maquina virtual y correrlo ahí
-
 
 
