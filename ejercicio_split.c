@@ -1,6 +1,6 @@
 #include "split.h"
 #include <stdlib.h>
-
+#include <stdbool.h>
 
 //"Hola;1;2;3;mundo"
 // ["Hola", "1","2","3","mundo"]
@@ -35,8 +35,9 @@ struct vector *split(char *texto, char separador)
         
         resultado->cantidad = 0;
         int cant_letras_aux = 0;
+        bool error_memoria = false;
 
-        for (int i = 0; i < strlen(texto); i++) {
+        for (int i = 0; i < strlen(texto) && !error_memoria; i++) {
                 if (texto[i] == separador || i == 0) {
                         char* palabra_aux = malloc(sizeof(char));
 
@@ -46,11 +47,11 @@ struct vector *split(char *texto, char separador)
                                 cant_letras_aux = 1;
                                 resultado->cantidad++;
                         } else {
-                                goto error_memoria;    
+                                error_memoria = true;    
                         }
                 } else {
                         char* palabra_actualizada = realloc(
-                            resultado->palabras[resultado->cantidad - 1], (cant_letras_aux + 1)*(sizeof(char)));
+                                resultado->palabras[resultado->cantidad - 1], (cant_letras_aux + 1)*(sizeof(char)));
 
                         if (palabra_actualizada != NULL) {
                                 resultado->palabras[resultado->cantidad - 1] = palabra_actualizada;
@@ -58,16 +59,18 @@ struct vector *split(char *texto, char separador)
                                 resultado->palabras[resultado->cantidad - 1][cant_letras_aux] = '\0'; 
                                 cant_letras_aux++;
                         } else {
-                                goto error_memoria;
+                                error_memoria= true;
                         }
                 }
         }
 
-        return resultado;
+        if (error_memoria) {
+                vector_destruir(resultado);
+                return NULL;
+        }
 
-error_memoria: 
-        vector_destruir(resultado);
-        return NULL;
+        return resultado;
+        
 }
 
 
