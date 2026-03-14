@@ -22,6 +22,31 @@ void vector_destruir(struct vector *v)
 }
 
 
+//Debería armar una función que se crear vector y que directamente reserve la memoria y todo eso
+/*
+*PRE:
+*POST:
+*/
+struct vector* vector_crear()
+{
+        struct vector *v = malloc(sizeof(struct vector));
+
+        if (!v)
+                return NULL;
+        
+        char *palabras = malloc(sizeof(char));
+        if (!palabras) {
+                free(v);
+                return NULL;
+        }
+
+        v->palabras = palabras;
+        return v;
+        
+};
+
+
+
 //creo que lo que pasa es que no reserve un char* para tener como vector de strings, directamente intenté llenar un vector que todavía no está en ningún lado
 
 /*
@@ -33,10 +58,12 @@ struct vector *split(char *texto, char separador)
 {
         struct vector *resultado = malloc(sizeof(struct vector));
 
+        if (!resultado){
+                return avisar_error();
+        }
 
-        if (!resultado)
-                return NULL;
-        
+
+
         resultado->cantidad = 0;
         size_t cant_letras_aux = 0;
         bool error_memoria = false;
