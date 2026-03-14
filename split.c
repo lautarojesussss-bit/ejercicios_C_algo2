@@ -1,6 +1,7 @@
 #include "split.h"
 #include <stdlib.h>
 #include <stdbool.h>
+#include<string.h>
 
 //"Hola;1;2;3;mundo"
 // ["Hola", "1","2","3","mundo"]
@@ -51,7 +52,7 @@ struct vector *split(char *texto, char separador)
                         }
                 } else {
                         char* palabra_actualizada = realloc(
-                                resultado->palabras[resultado->cantidad - 1], (cant_letras_aux + 1)*(sizeof(char)));
+                                resultado->palabras[(resultado->cantidad) - 1], (cant_letras_aux + 1)*(sizeof(char)));
 
                         if (palabra_actualizada != NULL) {
                                 resultado->palabras[resultado->cantidad - 1] = palabra_actualizada;
