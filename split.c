@@ -15,12 +15,14 @@
 */
 void vector_destruir(struct vector *v)
 {
-        for (int i = 0; i < v->cantidad; i++)
+        for (size_t i = 0; i < v->cantidad; i++)
                 free(v->palabras[i]);
         
         free(v);
 }
 
+
+//creo que lo que pasa es que no reserve un char* para tener como vector de strings, directamente intenté llenar un vector que todavía no está en ningún lado
 
 /*
 *PRE: texto debe ser un string
@@ -31,14 +33,15 @@ struct vector *split(char *texto, char separador)
 {
         struct vector *resultado = malloc(sizeof(struct vector));
 
+
         if (!resultado)
                 return NULL;
         
         resultado->cantidad = 0;
-        int cant_letras_aux = 0;
+        size_t cant_letras_aux = 0;
         bool error_memoria = false;
 
-        for (int i = 0; i < strlen(texto) && !error_memoria; i++) {
+        for (size_t i = 0; i < strlen(texto) && !error_memoria; i++) {
                 if (texto[i] == separador || i == 0) {
                         char* palabra_aux = malloc(sizeof(char));
 
