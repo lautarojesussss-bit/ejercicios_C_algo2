@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include<string.h>
+#define ERROR_MENSAJE "Error al intentar reservar memoria.\n"
 
 //"Hola;1;2;3;mundo"
 // ["Hola", "1","2","3","mundo"]
@@ -44,7 +45,11 @@ struct vector* vector_crear()
         return v;
 };
 
-
+struct vector* avisar_error()
+{
+        printf(ERROR_MENSAJE);
+        return NULL;
+}
 
 //creo que lo que pasa es que no reserve un char* para tener como vector de strings, directamente intenté llenar un vector que todavía no está en ningún lado
 
@@ -55,13 +60,11 @@ struct vector* vector_crear()
 */ 
 struct vector *split(char *texto, char separador)
 {
-        struct vector *resultado = malloc(sizeof(struct vector));
+        struct vector *resultado = vector_crear();
 
         if (!resultado){
                 return avisar_error();
         }
-
-
 
         resultado->cantidad = 0;
         size_t cant_letras_aux = 0;
@@ -69,6 +72,7 @@ struct vector *split(char *texto, char separador)
 
         for (size_t i = 0; i < strlen(texto) && !error_memoria; i++) {
                 if (texto[i] == separador || i == 0) {
+                        char* palabras_aux = realloc(resultado->palabras, (resultado->cantidad + 1)*sizeof(char*));
                         char* palabra_aux = malloc(sizeof(char));
 
                         if (palabra_aux != NULL) {
