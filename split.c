@@ -43,6 +43,18 @@ struct vector* vector_crear()
         }
 
         v->palabras = palabras;
+
+        char *letra = malloc(sizeof(char));
+        if (!letra)
+        {
+                free(v->palabras);
+                free(v);
+                return NULL;
+        }
+
+        *letra = '\0';
+        v->palabras[0] =letra;
+        v->cantidad = 1;
         return v;
 };
 
@@ -63,16 +75,14 @@ struct vector *split(char *texto, char separador)
 {
         struct vector *resultado = vector_crear();
 
-        if (!resultado){
+        if (!resultado)
                 return avisar_error();
-        }
 
-        resultado->cantidad = 0;
-        size_t cant_letras_aux = 0;
+        size_t cant_letras_aux = 1;
         bool error_memoria = false;
 
-        for (size_t i = 0; i < strlen(texto) && !error_memoria; i++) {
-                if (texto[i] == separador || i == 0) {
+        for (int i = 0; i < strlen(texto) && !error_memoria; i++) {
+                if (texto[i] == separador) {
                         char** palabras_aux = realloc(resultado->palabras, (resultado->cantidad + 1)*sizeof(char*));
                         char* nueva_palabra_aux = malloc(sizeof(char));
 
