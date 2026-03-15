@@ -5,6 +5,8 @@
 #include<stdio.h>
 #define ERROR_MENSAJE "Error al intentar reservar memoria.\n"
 
+
+
 /*
 *PRE: vector debe haber sido creado con vector_crear()
 *POST: libera toda la memoria reservada vinculada a v
@@ -16,16 +18,60 @@ void vector_destruir(struct vector *v)
 
         for (size_t i = 0; i < v->cantidad; i++)
                 free(v->palabras[i]);
-        free(v->palabras); //este me falta tanto reservar como liberar
+        free(v->palabras);
         free(v);
 }
+
+
+
+void actualizar_palabra(struct vector *v, bool *error_memoria, size_t *cant_caracteres_aux, char nueva_letra)
+{
+        size_t pos_aux = (v->cantidad -1);
+
+        char* palabra_actualizar_aux = realloc(
+                v->palabras[pos_aux], (*cant_caracteres_aux + 1)*(sizeof(char)));
+
+        if (palabra_actualizar_aux != NULL) {
+                v->palabras[pos_aux] = palabra_actualizar_aux;
+                v->palabras[pos_aux][*cant_caracteres_aux - 1] = nueva_letra;
+                v->palabras[pos_aux][*cant_caracteres_aux] = '\0'; 
+                (*cant_caracteres_aux)++;
+        } else {
+                *error_memoria = true;
+        }
+}
+
+void agrandar_vector_palabras(struct vector *v, bool *error_memoria, size_t *cant_caracteres_aux)
+{
+        char** palabras_aux = realloc(v->palabras, (v->cantidad + 1)*sizeof(char*));
+
+        if (palabras_aux != NULL) {
+                v->palabras = palabras_aux;
+                v->palabras[v->cantidad] = NULL;
+                v->cantidad++;
+
+                char* nueva_palabra_aux = malloc(sizeof(char));
+
+                if (nueva_palabra_aux != NULL) {
+                        v->palabras[v->cantidad -1] = nueva_palabra_aux;
+                        v->palabras[v->cantidad -1][0] = '\0';
+                        *cant_caracteres_aux = 1;
+                }
+                else {
+                        *error_memoria = true;
+                }
+        } else {
+                *error_memoria = true;    
+        }
+}
+
 
 /*
 *PRE: 
 *POST: devuelve un puntero a una instancia de struct vector inicializado 
 *con una sola palabra que es solo el caracter nulo
 */
-struct vector* vector_crear()
+struct vector* vector_inicializar()
 {
         struct vector *v = malloc(sizeof(struct vector));
 
@@ -40,19 +86,22 @@ struct vector* vector_crear()
 
         v->palabras = palabras;
 
-        char *letra = malloc(sizeof(char));
-        if (!letra)
+        char *caracter_inicial = malloc(sizeof(char));
+        if (!caracter_inicial)
         {
                 free(v->palabras);
                 free(v);
                 return NULL;
         }
 
-        *letra = '\0';
-        v->palabras[0] =letra;
+        *caracter_inicial = '\0';
+        v->palabras[0] = caracter_inicial;
         v->cantidad = 1;
         return v;
 };
+
+
+
 
 /*
 *PRE: 
@@ -71,41 +120,20 @@ struct vector* avisar_error()
 */ 
 struct vector *split(char *texto, char separador)
 {
-        struct vector *resultado = vector_crear();
+        struct vector *resultado = vector_inicializar();
 
         if (!resultado)
-                return NULL;
-        
-        size_t cant_letras_aux = 1;
+                return avisar_error();
+
+        size_t cant_caracteres_aux = 1;
+        size_t len = strlen(texto);
         bool error_memoria = false;
 
-        for (int i = 0; !error_memoria && i < strlen(texto) ; i++) {
-                if (texto[i] == separador) {
-                        char** palabras_aux = realloc(resultado->palabras, (resultado->cantidad + 1)*sizeof(char*));
-                        char* nueva_palabra_aux = malloc(sizeof(char));
-
-                        if (palabras_aux != NULL && nueva_palabra_aux != NULL ) {
-                                resultado->palabras = palabras_aux;
-                                resultado->palabras[resultado->cantidad] = nueva_palabra_aux;
-                                resultado->palabras[resultado->cantidad][0] = '\0';
-                                cant_letras_aux = 1;
-                                resultado->cantidad++;
-                        } else {
-                                error_memoria = true;    
-                        }
-                } else {
-                        char* palabra_actualizar_aux = realloc(
-                                resultado->palabras[(resultado->cantidad) - 1], (cant_letras_aux + 1)*(sizeof(char)));
-
-                        if (palabra_actualizar_aux != NULL) {
-                                resultado->palabras[resultado->cantidad - 1] = palabra_actualizar_aux;
-                                resultado->palabras[resultado->cantidad - 1][cant_letras_aux - 1] = texto[i];
-                                resultado->palabras[resultado->cantidad - 1][cant_letras_aux] = '\0'; 
-                                cant_letras_aux++;
-                        } else {
-                                error_memoria= true;
-                        }
-                }
+        for (int i = 0; !error_memoria && i < len ; i++) {
+                if (texto[i] == separador)
+                        agrandar_vector_palabras(resultado, &error_memoria, &cant_caracteres_aux);
+                else
+                        actualizar_palabra(resultado, &error_memoria, &cant_caracteres_aux, texto[i]);
         }
 
         if (error_memoria) {

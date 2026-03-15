@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
+#include<stdbool.h>
 
 #define MAX_ENTRADA 200
 #define SALIDA "exit\n"
@@ -21,18 +22,26 @@ int main()
 {
         char leido[MAX_ENTRADA];
         printf(AVISO_INICIAL, MAX_ENTRADA-1);
+        bool error_memoria = false;
     
-        while(fgets(leido, MAX_ENTRADA, stdin) != NULL && strcmp(leido, SALIDA) != 0){
+        while(!error_memoria && fgets(leido, MAX_ENTRADA, stdin) != NULL && strcmp(leido, SALIDA) != 0){
                 limpiar_entrada(leido);
 
                 struct vector *v = split(leido, separador_prueba);
-                printf("Las palabras son:\n");
 
-                for (size_t i = 0; i < v->cantidad; i++)
-                        printf("%s\n",v->palabras[i]);
+                if (v != NULL)
+                {
+                        printf("Las palabras %i son:\n", v->cantidad);
 
-                vector_destruir(v);
-                printf(AVISO_INICIAL, MAX_ENTRADA-1);        
+                        for (size_t i = 0; i < v->cantidad; i++)
+                                printf("%s\n",v->palabras[i]);
+
+                        vector_destruir(v);
+                        printf(AVISO_INICIAL, MAX_ENTRADA-1);   
+                }
+                else{
+                        error_memoria = true;
+                }
         }
 
         return 0;
