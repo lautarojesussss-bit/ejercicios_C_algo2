@@ -11,6 +11,9 @@
 */
 void vector_destruir(struct vector *v)
 {
+        if(!v)
+                return;
+
         for (size_t i = 0; i < v->cantidad; i++)
                 free(v->palabras[i]);
         free(v->palabras); //este me falta tanto reservar como liberar
@@ -71,12 +74,12 @@ struct vector *split(char *texto, char separador)
         struct vector *resultado = vector_crear();
 
         if (!resultado)
-                return avisar_error();
-
+                return NULL;
+        
         size_t cant_letras_aux = 1;
         bool error_memoria = false;
 
-        for (int i = 0; i < strlen(texto) && !error_memoria; i++) {
+        for (int i = 0; !error_memoria && i < strlen(texto) ; i++) {
                 if (texto[i] == separador) {
                         char** palabras_aux = realloc(resultado->palabras, (resultado->cantidad + 1)*sizeof(char*));
                         char* nueva_palabra_aux = malloc(sizeof(char));
@@ -111,7 +114,6 @@ struct vector *split(char *texto, char separador)
         }
 
         return resultado;
-        
 }
 
 
