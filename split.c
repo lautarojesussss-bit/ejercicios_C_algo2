@@ -18,51 +18,59 @@ void vector_destruir(struct vector *v)
 
         for (size_t i = 0; i < v->cantidad; i++)
                 free(v->palabras[i]);
+
         free(v->palabras);
         free(v);
 }
 
+/*
+*PRE:
+*POST:
+*/
 
-
-void actualizar_palabra(struct vector *v, bool *error_memoria, size_t *cant_caracteres_aux, char nueva_letra)
+bool actualizar_palabra(struct vector *v, size_t *cant_caracteres_aux, char nueva_letra)
 {
         size_t pos_aux = (v->cantidad -1);
 
-        char* palabra_actualizar_aux = realloc(
+        char *palabra_actualizar_aux = realloc(
                 v->palabras[pos_aux], (*cant_caracteres_aux + 1)*(sizeof(char)));
 
-        if (palabra_actualizar_aux != NULL) {
-                v->palabras[pos_aux] = palabra_actualizar_aux;
-                v->palabras[pos_aux][*cant_caracteres_aux - 1] = nueva_letra;
-                v->palabras[pos_aux][*cant_caracteres_aux] = '\0'; 
-                (*cant_caracteres_aux)++;
-        } else {
-                *error_memoria = true;
-        }
+        if (!palabra_actualizar_aux) 
+                return false;
+
+        v->palabras[pos_aux] = palabra_actualizar_aux;
+        v->palabras[pos_aux][*cant_caracteres_aux - 1] = nueva_letra;
+        v->palabras[pos_aux][*cant_caracteres_aux] = '\0'; 
+        (*cant_caracteres_aux)++;
+
+        return true;
 }
 
-void agrandar_vector_palabras(struct vector *v, bool *error_memoria, size_t *cant_caracteres_aux)
+/*
+*PRE:
+*POST:
+*/
+bool agrandar_vector_palabras(struct vector *v, size_t *cant_caracteres_aux)
 {
-        char** palabras_aux = realloc(v->palabras, (v->cantidad + 1)*sizeof(char*));
+        char **palabras_aux = realloc(v->palabras, (v->cantidad + 1)*sizeof(char*));
 
-        if (palabras_aux != NULL) {
-                v->palabras = palabras_aux;
-                v->palabras[v->cantidad] = NULL;
-                v->cantidad++;
+        if (!palabras_aux) 
+                return false;
+        
+        v->palabras = palabras_aux;
+        v->palabras[v->cantidad] = NULL;
+        (v->cantidad)++;
 
-                char* nueva_palabra_aux = malloc(sizeof(char));
+        char *nueva_palabra_aux = malloc(sizeof(char));
 
-                if (nueva_palabra_aux != NULL) {
-                        v->palabras[v->cantidad -1] = nueva_palabra_aux;
-                        v->palabras[v->cantidad -1][0] = '\0';
-                        *cant_caracteres_aux = 1;
-                }
-                else {
-                        *error_memoria = true;
-                }
-        } else {
-                *error_memoria = true;    
-        }
+        if (!nueva_palabra_aux) 
+                return false;
+
+        v->palabras[v->cantidad -1] = nueva_palabra_aux;
+        v->palabras[v->cantidad -1][0] = '\0';
+        *cant_caracteres_aux = 1;
+
+        return true;
 }
 
 
@@ -71,7 +79,7 @@ void agrandar_vector_palabras(struct vector *v, bool *error_memoria, size_t *can
 *POST: devuelve un puntero a una instancia de struct vector inicializado 
 *con una sola palabra que es solo el caracter nulo
 */
-struct vector* vector_inicializar()
+struct vector *vector_inicializar()
 {
         struct vector *v = malloc(sizeof(struct vector));
 
@@ -87,18 +95,19 @@ struct vector* vector_inicializar()
         v->palabras = palabras;
 
         char *caracter_inicial = malloc(sizeof(char));
-        if (!caracter_inicial)
-        {
+
+        if (!caracter_inicial) {
                 free(v->palabras);
                 free(v);
                 return NULL;
         }
 
-        *caracter_inicial = '\0';
         v->palabras[0] = caracter_inicial;
+        v->palabras[0][0] = '\0';
         v->cantidad = 1;
+
         return v;
-};
+}
 
 
 
@@ -107,7 +116,7 @@ struct vector* vector_inicializar()
 *PRE: 
 *POST: devuelve NULL e imprime un aviso de error 
 */
-struct vector* avisar_error()
+struct vector *aviso_error()
 {
         printf(ERROR_MENSAJE);
         return NULL;
@@ -123,22 +132,22 @@ struct vector *split(char *texto, char separador)
         struct vector *resultado = vector_inicializar();
 
         if (!resultado)
-                return avisar_error();
+                return aviso_error();
 
         size_t cant_caracteres_aux = 1;
         size_t len = strlen(texto);
-        bool error_memoria = false;
+        bool memoria_ok = true;
 
-        for (int i = 0; !error_memoria && i < len ; i++) {
+        for (int i = 0; memoria_ok && i < len ; i++) {
                 if (texto[i] == separador)
-                        agrandar_vector_palabras(resultado, &error_memoria, &cant_caracteres_aux);
+                        memoria_ok = agrandar_vector_palabras(resultado, &cant_caracteres_aux);
                 else
-                        actualizar_palabra(resultado, &error_memoria, &cant_caracteres_aux, texto[i]);
+                        memoria_ok = actualizar_palabra(resultado, &cant_caracteres_aux, texto[i]);
         }
 
-        if (error_memoria) {
+        if (!memoria_ok) {
                 vector_destruir(resultado);
-                return avisar_error();
+                return aviso_error();
         }
 
         return resultado;
