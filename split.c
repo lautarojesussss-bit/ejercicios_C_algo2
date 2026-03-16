@@ -86,13 +86,14 @@ struct vector *vector_inicializar()
         if (!v)
                 return NULL;
         
-        char **palabras = malloc(sizeof(char*));
-        if (!palabras) {
+        char **palabras_aux = malloc(sizeof(char*));
+        
+        if (!palabras_aux) {
                 free(v);
                 return NULL;
         }
 
-        v->palabras = palabras;
+        v->palabras = palabras_aux;
 
         char *caracter_inicial = malloc(sizeof(char));
 
