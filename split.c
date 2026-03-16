@@ -139,7 +139,7 @@ struct vector *split(char *texto, char separador)
         size_t len = strlen(texto);
         bool memoria_ok = true;
 
-        for (int i = 0; memoria_ok && i < len ; i++) {
+        for (size_t i = 0; memoria_ok && i < len ; i++) {
                 if (texto[i] == separador)
                         memoria_ok = agrandar_vector_palabras(resultado, &cant_caracteres_aux);
                 else
