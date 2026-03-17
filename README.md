@@ -68,13 +68,19 @@ La función agrandar_vector_palabras se encarga de reservar nueva memoria para a
   <p>Diagrama de flujo de bool agrandar_vector_palabras(struct vector *v, size_t *cant_caracteres_aux).</p>
 </div>
 
+La función inicializar_vector se encarga de crear en el heap una instancia de struct vector e inicializar de forma minima sus campos
+<div align="center">
+  <img src="diagramas_de_flujo/inicializar_vector_2.svg" width="70%">
+  <p>Diagrama de flujo de struct vector *vector_inicializar().</p>
+</div>
+
 
 ## 3. Estructura
 
-No armé nuevas estructuras para el tp.
+No armé nuevas estructuras para el tp, sólo use el struct vector que estaba el split.h
 
 ### 3.1. Diagrama de memoria
-Realizar un diagrama de memoria de la estructura de memoria durante la ejecución del programa, esto debe incluir el stack y el heap con las estructuras contenidas en ellos.
+Este es un ejemplo de lo que tendría la memoria justo antes de hacer el return en la función split.c durante la prueba_1 (donde texto es "Hola;amigo" y el carácter separador es ';') si no hubo errores de memoria
 
 <div align="center">
   <img src="diagramas_de_flujo/memoria_diagrama_4 (1).svg" width="70%">
