@@ -62,9 +62,16 @@ La función actualizar_palabra se encarga de agrandar la última palabra del vec
   <p>Diagrama de flujo de bool actualizar_palabra(struct vector *v, size_t *cant_caracteres_aux, char nueva_letra).</p>
 </div>
 
+La función agrandar_vector_palabras se encarga de reservar nueva memoria para agregar un char* al vector de palabras, y además reservar memoria para un carácter nulo que le cargamos automáticamente a esa nueva palabra, además incrementa el campo cantidad de v y vuelve a poner en 1 el contador de carácteres
+<div align="center">
+  <img src="diagramas_de_flujo/agrandar_vector_palabras_v2.svg" width="70%">
+  <p>Diagrama de flujo de bool agrandar_vector_palabras(struct vector *v, size_t *cant_caracteres_aux).</p>
+</div>
+
+
 ## 3. Estructura
 
-Para implementar la estructura decidí hacerlo con un campo..., además tiene un puntero que... y eso permite que....
+No armé nuevas estructuras para el tp.
 
 ### 3.1. Diagrama de memoria
 Realizar un diagrama de memoria de la estructura de memoria durante la ejecución del programa, esto debe incluir el stack y el heap con las estructuras contenidas en ellos.
