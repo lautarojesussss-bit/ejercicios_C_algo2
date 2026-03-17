@@ -56,6 +56,26 @@ La función vector_destruir recibe un puntero a una instancia del struct vector 
   <p>Diagrama de flujo de void vector_destruir(struct vector *v).</p>
 </div>
 
+## 3. Estructura
+
+No armé nuevas estructuras para el tp, sólo use el struct vector que estaba el split.h
+
+### 3.1. Diagrama de memoria
+Este es un ejemplo de lo que tendría la memoria justo antes de hacer el return en la función split.c durante la prueba_1 (donde texto es "Hola;amigo" y el carácter separador es ';') si no hubo errores de memoria
+
+<div align="center">
+  <img src="diagramas_de_flujo/diagrama_memoria_v5.svg" width="70%">
+  <p>Diagrama de memoria de la estructura.</p>
+</div>
+
+## 4. Decisiones de diseño y/o complejidades de implementación
+
+La mayor complejidad en el tp que fue controlar los errores de memoria de manera que si algo fallaba, a la hora de reservar memoria para una letra por ej, pudiese terminar liberando todo sin dejar algún bloque reservado suelto porque me olvidé de actualizar un contador o de cargar un puntero al struct vector etc. Fue complicado pensar el primer string que se carga al vector palabras, porque si no lo hacía como lo hice (inicializando minimamente el campo palabras del struct vector a la vez que se construye)tenía que hacer las funciones auxiliares adaptables a ese caso donde cantidad es cero y el primer string es el que tiene que ser creado desde cero etc, y se volvía menos entendible el código en mi opinión.
+
+La primera vez que armé inicializar_vector también me olvidé de que tenía que reservar memoria para el char** en sí mismo también, no solo para el struct vector y para un char.
+
+Originalmente la función split no estaba modularizada, y si bien no quedaba demasiado larga si sentí que era poco clara, especialmente cuando intenté hacer su diagrama de flujo, así que armé las dos funciones auxiliares, una para cuando se necesita agrandar solo una palabra ya existente y otra para cuando se necesita agregar otra palabra.
+
 La función actualizar_palabra se encarga de agrandar la última palabra del vector palabras de v, colocarle la nueva letra a esa palabra y colocarle también el carácter nulo al final, además de actualizar un contador auxiliar de caracteres
 <div align="center">
   <img src="diagramas_de_flujo/diagrama_actualizar_palabra_3.svg" width="70%">
@@ -73,27 +93,6 @@ La función inicializar_vector se encarga de crear en el heap una instancia de s
   <img src="diagramas_de_flujo/inicializar_vector_2.svg" width="70%">
   <p>Diagrama de flujo de struct vector *vector_inicializar().</p>
 </div>
-
-
-## 3. Estructura
-
-No armé nuevas estructuras para el tp, sólo use el struct vector que estaba el split.h
-
-### 3.1. Diagrama de memoria
-Este es un ejemplo de lo que tendría la memoria justo antes de hacer el return en la función split.c durante la prueba_1 (donde texto es "Hola;amigo" y el carácter separador es ';') si no hubo errores de memoria
-
-<div align="center">
-  <img src="diagramas_de_flujo/diagrama_memoria_v5.svg" width="70%">
-  <p>Diagrama de memoria de la estructura.</p>
-</div>
-
-## 4. Decisiones de diseño y/o complejidades de implementación
-
-La mayor complejidad en el tp que fue controlar los errores de memoria de manera que si algo fallaba, a la hora de reservar memoria para una letra por ej, pudiese terminar liberando todo sin dejar algún bloque reservado suelto porque me olvidé de actualizar un contador o de cargar un puntero al struct vector etc. Fue complicado pensar el primer string que se carga al vector palabras, porque si no lo hacía como lo hice (inicializando minimamente el campo palabras del struct vector a la vez que se construye)tenía que hacer las funciones auxiliares adaptables a ese caso donde el primer string es el que tiene que ser creado desde cero etc, y se volvía menos entendible el código en mi opinión.
-
-La primera vez que armé inicializar_vector también me olvidé de que tenía que reservar memoria para el char** en sí mismo también, no solo para el struct vector y para un char.
-
-Originalmente la función split no estaba modularizada, y si bien no quedaba demasiado larga si sentí que era poco clara, especialmente cuando intenté hacer su diagrama de flujo, así que armé las dos funciones auxiliares, una para cuando se necesita agrandar solo una palabra ya existente y otra para cuando se necesita agregar otra palabra.
 
 ## 5. Respuestas a las preguntas teóricas
 
