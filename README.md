@@ -46,16 +46,21 @@ original en strings más pequeños usando el char que recibió como punto de sep
 
 <div align="center">
   <img src="diagramas_de_flujo/diagrama_split_v7.svg" width="70%">
-  <p>Diagrama de flujo del programa explicado con más detalle.</p>
+  <p>Diagrama de flujo de struct vector *split(char *texto, char separador).</p>
 </div>
 
 
 La función vector_destruir recibe un puntero a una instancia del struct vector y se encarga de liberar toda la memoria relacionada a esa instancia
 <div align="center">
   <img src="diagramas_de_flujo/vector_destruir_3.svg" width="70%">
-  <p>Diagrama de flujo del programa explicado con más detalle.</p>
+  <p>Diagrama de flujo de void vector_destruir(struct vector *v).</p>
 </div>
 
+La función actualizar_palabra se encarga de agrandar la última palabra del vector palabras de v, colocarle la nueva letra a esa palabra y colocarle también el carácter nulo al final, además de actualizar un contador auxiliar de caracteres
+<div align="center">
+  <img src="diagramas_de_flujo/diagrama_actualizar_palabra_3.svg width="70%">
+  <p>Diagrama de flujo de bool actualizar_palabra(struct vector *v, size_t *cant_caracteres_aux, char nueva_letra).</p>
+</div>
 
 ## 3. Estructura
 
