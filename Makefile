@@ -1,22 +1,21 @@
-# Variables para hacernos la vida más fácil
 CC = gcc
 CFLAGS = -g -std=c99 -Wall -Wconversion -Wtype-limits -Werror -I.
 VFLAGS = --leak-check=full --track-origins=yes --show-reachable=yes
-
-# Nombre del ejecutable
 EJEC = pruebas
 
-# La regla "all" es la que se corre por defecto al poner 'make'
-all: clean $(EJEC)
+# 1.1. Compilar: 'make' o 'make all' solo construye el ejecutable
+all: $(EJEC)
 
-# Compilación: unimos los dos archivos .c para crear el ejecutable
-$(EJEC): split.c prueba.c
-	$(CC) $(CFLAGS) split.c prueba.c -o $(EJEC)
+$(EJEC): split.c prueba2.c
+	$(CC) $(CFLAGS) split.c prueba2.c -o $(EJEC)
 
-# Regla para correr con Valgrind directamente
+# 1.2. Ejecutar pruebas: solo corre el binario
+run: $(EJEC)
+	./$(EJEC)
+
+# 1.3. Ejecutar con Valgrind
 valgrind: $(EJEC)
 	valgrind $(VFLAGS) ./$(EJEC)
 
-# Regla para limpiar los archivos generados
 clean:
 	rm -f $(EJEC)

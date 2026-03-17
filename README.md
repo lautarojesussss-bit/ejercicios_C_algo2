@@ -31,34 +31,28 @@
 
 ### 1.1. Compilar el proyecto
 ```bash
-comando
+make
 ```
 
 ### 1.2. Ejecutar las pruebas
 ```bash
-comando
+make run
 ```
 
 ### 1.3. Ejecutar el programa con Valgrind
 ```bash
-comando
+make valgrind
 ```
 
 ## 2. Funcionamiento
-Explicar **qué** hace el TP implementado, aclarando todas las decisiones de funcionamiento que no estaban definidas por el enunciado.
+La función split toma un string cualquiera y un char, y se encarga de separar el texto 
+original en strings más pequeños usando el char que recibió como punto de separación, los nuevos strings se colocan en un vector de strings dentro de un struct vector, en el orden que estaban escritos originalmente en el string más grande. 
 
-> [!IMPORTANT]
-> Es muy importante entender la *diferencia entre qué y cómo*. En esta sección **NO** se busca una explicación de cómo implementaste el programa, qué funciones usaste, en qué línea, etc.; se busca una explicación de **qué** es lo que hace el programa en líneas generales.
-
-Se debe incluir todos los diagramas que sean necesarios para explicar el funcionamiento del programa. Las estructuras deberán ser explicadas con diagramas de memoria. Los diagramas pedidos en el enunciado pueden ser colocados en esta sección, pero recordá indicarlo en la sección de respuestas.
-
-> [!WARNING]
-> Es importante usar diagramas para explicar los conceptos de forma clara, pero el exceso será negativo. Los diagramas deben tener un fin explicativo y, por lo general, sirven para reemplazar uno o múltiples párrafos de explicación.
 
 ## 2. Funcionamiento (EJEMPLO)
 El programa recibe 7 números del usuario y una vez obtenidos todos los muestra en pantalla. Para esto define un vector estático de 7 elementos y llena el mismo con los datos que inserta el usuario; cuando termina de insertar todos los números procede a imprimirlos en pantalla.
 <div align="center">
-  <img src="img/diagrama_flujo_programa.svg" width="70%">
+  <img src="diagramas_de_flujo/split_diagrama_v5.svg" width="70%">
   <p>Diagrama de flujo del programa explicado con más detalle.</p>
 </div>
 
