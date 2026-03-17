@@ -25,9 +25,6 @@
 
 ## 1. Instrucciones
 
-> [!TIP]
-> Se recomienda usar un Makefile y colocar en esta sección los comandos Make.
-
 ### 1.1. Compilar el proyecto
 ```bash
 make
@@ -48,7 +45,14 @@ La función split toma un string cualquiera y un char, y se encarga de separar e
 original en strings más pequeños usando el char que recibió como punto de separación, los nuevos strings se colocan en un vector de strings dentro de un struct vector, en el orden que estaban escritos originalmente en el string más grande. 
 
 <div align="center">
-  <img src="diagramas_de_flujo/split_diagrama_v6.svg" width="70%">
+  <img src="diagramas_de_flujo/diagrama_split_v7.svg" width="70%">
+  <p>Diagrama de flujo del programa explicado con más detalle.</p>
+</div>
+
+
+La función vector_destruir recibe un puntero a una instancia del struct vector y se encarga de liberar toda la memoria relacionada a esa instancia
+<div align="center">
+  <img src="diagramas_de_flujo/vector_destruir_3.svg" width="70%">
   <p>Diagrama de flujo del programa explicado con más detalle.</p>
 </div>
 

@@ -15,8 +15,10 @@ void vector_destruir(struct vector *v)
 {
         if(!v)
                 return;
+        
+        size_t len = v->cantidad;
 
-        for (size_t i = 0; i < v->cantidad; i++)
+        for (size_t i = 0; i < len; i++)
                 free(v->palabras[i]);
 
         free(v->palabras);
