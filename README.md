@@ -83,15 +83,17 @@ No armé nuevas estructuras para el tp, sólo use el struct vector que estaba el
 Este es un ejemplo de lo que tendría la memoria justo antes de hacer el return en la función split.c durante la prueba_1 (donde texto es "Hola;amigo" y el carácter separador es ';') si no hubo errores de memoria
 
 <div align="center">
-  <img src="diagramas_de_flujo/memoria_diagrama_4 (1).svg" width="70%">
+  <img src="diagramas_de_flujo/diagrama_memoria_v5.svg" width="70%">
   <p>Diagrama de memoria de la estructura.</p>
 </div>
 
 ## 4. Decisiones de diseño y/o complejidades de implementación
-Explicar las decisiones de diseño y/o las complejidades de implementación que hubo durante la resolución del TP.
 
+La mayor complejidad en el tp que fue controlar los errores de memoria de manera que si algo fallaba, a la hora de reservar memoria para una letra por ej, pudiese terminar liberando todo sin dejar algún bloque reservado suelto porque me olvidé de actualizar un contador o de cargar un puntero al struct vector etc. Fue complicado pensar el primer string que se carga al vector palabras, porque si no lo hacía como lo hice (inicializando minimamente el campo palabras del struct vector a la vez que se construye)tenía que hacer las funciones auxiliares adaptables a ese caso donde el primer string es el que tiene que ser creado desde cero etc, y se volvía menos entendible el código en mi opinión.
 
-La mayor complejidad en el tp creo que fue controlar los errores de memoria de manera que si algo fallaba pudiese terminar liberando todo sin dejar algún bloque reservado suelto porque me olvidé de actualizar un contador o de cargar un puntero al struct vector etc, además fue complicado pensar el primer string que se carga al vector palabras porque si no lo hacía como lo hice, o sea, inicializando primero el struct vector con 1 string al menos al ser creado, tenía que hacer las funciones auxiliares adaptables a ese caso en el que es el primer string el que tiene que ser creado desde cero etc, y se volvía menos entendible el código
+La primera vez que armé inicializar_vector también me olvidé de que tenía que reservar memoria para el char** en sí mismo también, no solo para el struct vector y para un char.
+
+Originalmente la función split no estaba modularizada, y si bien no quedaba demasiado larga si sentí que era poco clara, especialmente cuando intenté hacer su diagrama de flujo, así que armé las dos funciones auxiliares, una para cuando se necesita agrandar solo una palabra ya existente y otra para cuando se necesita agregar otra palabra.
 
 ## 5. Respuestas a las preguntas teóricas
 
@@ -101,4 +103,6 @@ Los strings en C son simplemente vectores de char (un char* que apunta al primer
 todas las operaciones que se hacen con string.h funcionan copiando/comparando/moviendo/contando caracter a caracter teniendo el caracter nulo como tope para el vector.
 
 ### 5.2 ¿Cómo funcionan las primitivas malloc y free?
-dsfdsf
+Malloc se usa para reservar memoria dinámica, un bloque contiguo de memoria dinámica especificamente, devuelve un puntero genérico, y solo le pasamos como argumento el tamaño, en bytes, del bloque que queremos reservar, si bien el puntero que devuelve es void podemos asignar el retorno del llamado a la función directamente a un tipo especifico de puntero, por ej char* o char** y se castea automáticamente,si por alguna manera no se puede reservar la memoria que pidió el usuario malloc retorna el puntero NULL
+
+free sirve para liberar la memoria dinámica reservada con funciones como realloc, malloc y calloc, solo le pasamos el puntero al bloque de memoria dinámica y listo, no devuelve nada, si le pasamos el puntero NULL no se rompe nada, pero sí es un error pasarle un puntero colgante, o sea un puntero a memoria que ya fue previamente liberada, tampoco se le puede pasar un puntero que no apunte al heap porque genera comportamiento indeterminado.
