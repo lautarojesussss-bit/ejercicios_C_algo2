@@ -41,8 +41,7 @@ make valgrind
 ```
 
 ## 2. Funcionamiento
-La función split toma un string cualquiera y un char, y se encarga de separar el texto 
-original en strings más pequeños usando el char que recibió como punto de separación, los nuevos strings se colocan en un vector de strings dentro de un struct vector, en el orden que estaban escritos originalmente en el string más grande. 
+La función split recibe una cadena y un separador, y devuelve un struct con todas las sub-cadenas encontradas y su cantidad"
 
 <div align="center">
   <img src="diagramas_de_flujo/diagrama_split_v7.svg" width="70%">
@@ -99,7 +98,7 @@ La función inicializar_vector se encarga de crear en el heap una instancia de s
 
 ### 5.1. ¿Cómo funcionan los strings en C?
 Los strings en C son simplemente vectores de char (un char* que apunta al primer char del string) que terminan con caracter nulo (\0)
-todas las operaciones que se hacen con string.h funcionan copiando/comparando/moviendo/contando caracter a caracter teniendo el caracter nulo como tope para el vector.
+todas las operaciones que se hacen con string.h funcionan copiando/comparando/moviendo/contando caracter a caracter teniendo el caracter nulo como "tope" para el vector.
 
 ### 5.2 ¿Cómo funcionan las primitivas malloc y free?
 Malloc se usa para reservar memoria dinámica, un bloque contiguo de memoria dinámica especificamente, devuelve un puntero genérico, y solo le pasamos como argumento el tamaño, en bytes, del bloque que queremos reservar, si bien el puntero que devuelve es void podemos asignar el retorno del llamado a la función directamente a un tipo especifico de puntero, por ej char* o char** y se castea automáticamente,si por alguna manera no se puede reservar la memoria que pidió el usuario malloc retorna el puntero NULL
