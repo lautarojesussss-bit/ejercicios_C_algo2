@@ -8,7 +8,7 @@
 
 * Lautaro Jesús Duarte Vera
 * 114088
-* lautarojesussss@gmail.com (o lduartev@fi.uba.com)
+* lautarojesussss@gmail.com (o lduartev@fi.uba.ar)
 
 ---
 
