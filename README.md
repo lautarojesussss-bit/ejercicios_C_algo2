@@ -8,7 +8,7 @@
 
 * Lautaro Jesús Duarte Vera
 * 114088
-* lautarojesussss@gmail.com
+* lautarojesussss@gmail.com o lduartev@fi.uba.com (uso más el @gmail)
 
 ---
 
@@ -20,7 +20,6 @@
 * [2. Funcionamiento](#2-Funcionamiento)
 * [3. Estructura](#3-Estructura)
   * [3.1. Diagrama de memoria](#31-Diagrama-de-memoria)
-  * [3.2. Análisis de complejidades](#32-Análisis-de-complejidades)
 * [4. Decisiones de diseño y/o complejidades de implementación](#4-Decisiones-de-diseño-yo-complejidades-de-implementación)
 * [5. Respuestas a las preguntas teóricas](#5-Respuestas-a-las-preguntas-teóricas)
 
@@ -48,64 +47,36 @@ make valgrind
 La función split toma un string cualquiera y un char, y se encarga de separar el texto 
 original en strings más pequeños usando el char que recibió como punto de separación, los nuevos strings se colocan en un vector de strings dentro de un struct vector, en el orden que estaban escritos originalmente en el string más grande. 
 
-
-## 2. Funcionamiento (EJEMPLO)
-El programa recibe 7 números del usuario y una vez obtenidos todos los muestra en pantalla. Para esto define un vector estático de 7 elementos y llena el mismo con los datos que inserta el usuario; cuando termina de insertar todos los números procede a imprimirlos en pantalla.
 <div align="center">
-  <img src="diagramas_de_flujo/split_diagrama_v5.svg" width="70%">
+  <img src="diagramas_de_flujo/split_diagrama_v6.svg" width="70%">
   <p>Diagrama de flujo del programa explicado con más detalle.</p>
 </div>
 
-Cuando el vector llega a su máximo el programa procede a escalarlo con un factor de crecimiento..., es decir, si el vector tenía....
 
 ## 3. Estructura
-Explicar cómo se implementó la/s estructura/s pedida/s en el [enunciado](./ENUNCIADO.md). En esta sección el objetivo es explicar en líneas generales, no técnicas, qué contiene la estructura, para qué y por qué.
 
-## 3. Estructura (EJEMPLO)
 Para implementar la estructura decidí hacerlo con un campo..., además tiene un puntero que... y eso permite que....
 
 ### 3.1. Diagrama de memoria
 Realizar un diagrama de memoria de la estructura de memoria durante la ejecución del programa, esto debe incluir el stack y el heap con las estructuras contenidas en ellos.
 
-### 3.1 Diagrama de memoria (EJEMPLO)
 <div align="center">
-  <img src="img/diagrama_memoria__1.svg" width="70%">
+  <img src="diagramas_de_flujo/memoria_diagrama_4 (1).svg" width="70%">
   <p>Diagrama de memoria de la estructura.</p>
 </div>
-
-
-### 3.2. Análisis de complejidades
-Explicar las complejidades de las diversas funciones que se implementaron en el programa. Esto debe incluir al menos a las funciones de la interfaz (el .h) del programa. Además, se debe ofrecer una justificación de la complejidad, es decir, por qué es esa la complejidad Big-O y no otra.
-
-### 3.2. Análisis de complejidades (EJEMPLO 1)
-En el programa tenemos funciones auxiliares y funciones principales (las que van en el .h). Respecto a estas funciones podemos analizar que:
-* `fun1` tiene una complejidad de $O(1)$ ya que tiene como parámetro... y, al leer una línea....
-* `fun2` tiene una complejidad de $O(n)$ ya que tiene como parámetro..., la cual....
-* `fun3` tiene una complejidad de $O(n^2)$ ya que tiene como parámetro... y se encarga de....
-
-### 3.2. Análisis de complejidades (EJEMPLO 2)
-|      Función      |Complejidad|                 Justificación                  |
-|:-----------------:|:---------:|:----------------------------------------------:|
-|      `fun1`       |  $O(1)$   |Tiene como parámetro... y, al leer una línea....|
-|      `fun2`       |  $O(n)$   |Tiene como parámetro..., la cual....            |
-|      `fun3`       |  $O(n^2)$ |Tiene como parámetro... y se encarga de....     |
 
 ## 4. Decisiones de diseño y/o complejidades de implementación
 Explicar las decisiones de diseño y/o las complejidades de implementación que hubo durante la resolución del TP.
 
-## 4. Decisiones de diseño y/o complejidades de implementación (EJEMPLO)
-La mayor complejidad en el TP se encuentra en la función `foo` que requiere hacer...; es por esto que decidí.... Además, decidí que el programa haga... para mejorar la implementación.
+
+La mayor complejidad en el tp creo que fue controlar los errores de memoria de manera que si algo fallaba pudiese terminar liberando todo sin dejar algún bloque reservado suelto porque me olvidé de actualizar un contador o de cargar un puntero al struct vector etc, además fue complicado pensar el primer string que se carga al vector palabras porque si no lo hacía como lo hice, o sea, inicializando primero el struct vector con 1 string al menos al ser creado, tenía que hacer las funciones auxiliares adaptables a ese caso en el que es el primer string el que tiene que ser creado desde cero etc, y se volvía menos entendible el código
 
 ## 5. Respuestas a las preguntas teóricas
-Deberás incluir en esta sección las respuestas a las preguntas teóricas indicadas en el [enunciado](./ENUNCIADO.md) del TP.
 
-## 5. Respuestas a las preguntas teóricas (EJEMPLO)
 
-### 5.1. ¿Porqué...?
-Respondido en su respectiva sección.
+### 5.1. ¿Cómo funcionan los strings en C?
+Los strings en C son simplemente vectores de char (un char* que apunta al primer char del string) que terminan con caracter nulo (\0)
+todas las operaciones que se hacen con string.h funcionan copiando/comparando/moviendo/contando caracter a caracter teniendo el caracter nulo como tope para el vector.
 
-### 5.2 ¿Cómo...?
-Para implementar el....
-
-### 5.3 ¿Cuál fue el...?
-El motivo fue....
+### 5.2 ¿Cómo funcionan las primitivas malloc y free?
+dsfdsf
